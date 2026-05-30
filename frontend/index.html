@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serverless Task Analyzer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Serverless Task Analyzer</h1>
+            <p>Manage your team's tasks and analyze them using AWS Cloud Services</p>
+        </header>
+
+        <section class="task-form-section">
+            <h2>Create New Task</h2>
+            <form id="task-form">
+                <div class="form-group">
+                    <label for="task-title">Task Title:</label>
+                    <input type="text" id="task-title" placeholder="Enter task title..." required>
+                </div>
+                <div class="form-group">
+                    <label for="task-desc">Description / Content:</label>
+                    <textarea id="task-desc" rows="3" placeholder="Describe the task..." required></textarea>
+                </div>
+                <button type="submit" id="submit-btn">Add Task</button>
+            </form>
+        </section>
+
+        <section class="tasks-list-section">
+            <h2>Current Tasks</h2>
+            <div id="loading-message">Loading tasks from AWS Lambda...</div>
+            <div id="tasks-container" class="tasks-grid">
+                </div>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
