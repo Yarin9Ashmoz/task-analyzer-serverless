@@ -1,27 +1,45 @@
 import json
+import os
+import boto3
+from botocore.exceptions import ClientError
+
+# Initialize the DynamoDB client using boto3
+dynamodb = boto3.resource('dynamodb')
+
+# Get the table name from environment variables (configured later in AWS)
+TABLE_NAME = os.environ.get('TASKS_TABLE_NAME', 'tasks')
+table = dynamodb.Table(TABLE_NAME)
 
 def lambda_handler(event, context):
     """
-    AWS Lambda handler that returns a mock list of tasks.
-    This serves as the initial boilerplate for our Serverless API.
+    AWS Lambda handler that fetches all tasks from the DynamoDB table.
     """
-    
-    # Mock data to simulate database records during initial development
-    mock_tasks = [
-        {"id": "1", "title": "Setup GitHub Repo", "status": "Done"},
-        {"id": "2", "title": "Configure AWS Lambda", "status": "In Progress"}
-    ]
-    
-    # Return an HTTP 200 OK response with JSON payload
-    return {
-        "statusCode": 200,
-        "headers": {
-            "Content-Type": "application/json",
-            # Critical: Enable CORS to allow the frontend to safely fetch data from this API
-            "Access-Control-Allow-Origin": "*"  
-        },
-        "body": json.dumps({
-            "message": "Hello from Lambda! Tasks fetched successfully.",
-            "tasks": mock_tasks
-        })
-    }
+    try:
+        # Perform a scan operation to fetch all items from the table
+        response = table.scan()
+        tasks = response.get('Items', [])
+        
+        return {
+            "statusCode": 200,
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"  # Required for frontend CORS integration
+            },
+            "body": json.dumps({
+                "tasks": tasks
+            })
+        }
+        
+    except ClientError as e:
+        print(f"DynamoDB Error: {e.response['Error']['Message']}")
+        return {
+            "statusCode": 500,
+            "headers": {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*"
+            },
+            "body": json.dumps({
+                "error": "Failed to fetch tasks from database",
+                "details": e.response['Error']['Message']
+            })
+        }
