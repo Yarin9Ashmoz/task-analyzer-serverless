@@ -1,0 +1,31 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+ENV/
+env/
+
+# === OS Files ===
+.DS_Store
+Thumbs.db
+*.log
+
+# === IDEs and Editors ===
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# === Security & Secrets (Crucial for AWS Project!) ===
+.env
+.env.local
+*.pem
+credentials.json
+aws_keys.txt
+secrets.yaml
