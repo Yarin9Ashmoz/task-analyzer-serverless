@@ -1,5 +1,5 @@
 // API Configuration (We will update this URL once AWS API Gateway is deployed)
-const API_BASE_URL = ""; 
+const API_BASE_URL = "https://l7wa68iehd.execute-api.eu-north-1.amazonaws.com/prod"; 
 
 // Executed when the DOM is fully loaded
 document.addEventListener("DOMContentLoaded", () => {
@@ -121,7 +121,7 @@ async function handleTaskSubmit(event) {
         const response = await fetch(`${API_BASE_URL}/tasks`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: json.stringify(payload)
+            body: JSON.stringify(payload)
         });
 
         if (!response.ok) throw new Error("Failed to create task.");
